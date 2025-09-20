@@ -1,15 +1,20 @@
 #include "dns.h"
+#include <stddef.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <arpa/inet.h>
 
 #define set_bit(num, pos)  (num | (1 << (pos - 1)));
 #define zero_bit(num, pos) (num & (~(1 << (pos - 1))));
-#define INET_ADDRSTRLEN 16
+
 
 void init_dns_connection(dns_connection *conn, const char *addr, int32_t port)
 {
     conn->socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     conn->conn_s.sin_family = AF_INET;
     conn->conn_s.sin_addr.s_addr = inet_addr(addr);
-    conn->conn_s.sin_port = _byteswap_ushort(port);
+    conn->conn_s.sin_port = htons(port);
     connect(conn->socket, (struct sockaddr*)&conn->conn_s, sizeof(conn->conn_s));
 }
 
@@ -137,12 +142,12 @@ char **parse_dns_request(char *bytes, int32_t *count)
         if (type == 1 && tclass == 1 && rdlen == 4) // A
         {
             inet_ntop(AF_INET, ptr + offset, buffer, sizeof(buffer));
-            list[arr_iter] = _strdup(buffer);
+            list[arr_iter] = strdup(buffer);
         }
         else if (type == 28 && tclass == 1 && rdlen == 16) // AAAA
         {
             inet_ntop(AF_INET6, ptr + offset, buffer, sizeof(buffer));
-            list[arr_iter] = _strdup(buffer);
+            list[arr_iter] = strdup(buffer);
         }
         else if (type == 5) // CNAME
         {
@@ -161,12 +166,12 @@ char **parse_dns_request(char *bytes, int32_t *count)
                 rdoffset += len + 1;
             }
             snprintf(buffer, sizeof(buffer), "CNAME (len=%d)", rdlen);
-            list[arr_iter] = _strdup(buffer);
+            list[arr_iter] = strdup(buffer);
         }
         else
         {
             snprintf(buffer, sizeof(buffer), "TYPE=%d CLASS=%d LEN=%d", type, tclass, rdlen);
-            list[arr_iter] = _strdup(buffer);
+            list[arr_iter] = strdup(buffer);
         }
 
         arr_iter++;

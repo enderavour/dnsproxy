@@ -1,17 +1,17 @@
 #include "dns.h"
 #include "parse_config.h"
+#include "blacklist.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 static config_t CONFIG = {0};
 
 int32_t main(int argc, char *argv[])
 {
-    WSADATA wsaData;
-    WSAStartup(MAKEWORD(2, 2), &wsaData);
-
     load_proxy_config(argv[1], &CONFIG);
 
-    SOCKET sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    int32_t sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     struct sockaddr_in server_addr = {0};
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = INADDR_ANY;
@@ -48,7 +48,7 @@ int32_t main(int argc, char *argv[])
                 sendto(sock, up_resp, RECV_BUF_SIZE, 0, (struct sockaddr*)&client, len);
                 free(up_resp);
             }
-            closesocket(upstream.socket);
+            close(upstream.socket);
         }
     }
 
@@ -59,6 +59,6 @@ int32_t main(int argc, char *argv[])
 
     free(CONFIG.blacklist);
 
-    WSACleanup();
+
     return 0;
 }

@@ -1,6 +1,7 @@
 #include "blacklist.h"
 #include <string.h>
-#include <WinSock2.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
 
 void extract_qname(const uint8_t *req, char *out, int out_size)
 {

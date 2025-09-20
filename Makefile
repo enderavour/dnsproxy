@@ -1,9 +1,8 @@
-CC=cl
-SRC=serv.c dns.c ini.c parse_config.c blacklist.c
-TARGET=serv
+CC = gcc
+SRC = dproxy.c dns.c blacklist.c parse_config.c ini.c 
+TARGET = dproxy
 
 all: $(TARGET)
 
 $(TARGET): $(SRC)
-	$(CC) $(SRC) ws2_32.lib
-	del *.obj
+	$(CC) -o $(TARGET) $(SRC)

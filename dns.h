@@ -4,7 +4,9 @@
 #define RECV_BUF_SIZE 1024
 
 #include <stdint.h>
-#include <WinSock2.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <netinet/in.h>
 
 typedef struct 
 {
