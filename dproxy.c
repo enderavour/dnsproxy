@@ -9,7 +9,7 @@ static config_t CONFIG = {0};
 
 int32_t main(int argc, char *argv[])
 {
-    load_proxy_config(argv[1], &CONFIG);
+    load_proxy_config("config.ini", &CONFIG);
 
     int32_t sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     struct sockaddr_in server_addr = {0};
