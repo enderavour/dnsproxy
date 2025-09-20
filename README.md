@@ -64,4 +64,4 @@ Where:
 
 ## Notes 
 Configuration file parsing was implemented using "inih" library:
-[](https://github.com/benhoyt/inih.git)
+[Github Repository](https://github.com/benhoyt/inih.git)
