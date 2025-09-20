@@ -63,5 +63,5 @@ Where:
 ```fake_ip``` - IP address to which query will be resolved in case of ```fakeip``` parameter.
 
 ## Notes 
-Configuration file parsing was implemented using "inih" library, which consists of ini.h and ini.c files \ in my project: \
+Configuration file parsing was implemented using "inih" library, which consists of ini.h and ini.c files in my project: \
 [Github Repository](https://github.com/benhoyt/inih.git)
